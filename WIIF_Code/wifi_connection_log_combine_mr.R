@@ -33,8 +33,8 @@ if(length(args) == 0){
   print("No arguments supplied.")
   q()
 }else{
-  hdfs.data <- file.path(args[[1]]) 
-  hdfs.out <- file.path(args[[2]])
+  hdfs.data <- file.path(args[[1]]) #///user/hadoop/test_input
+  hdfs.out <- file.path(args[[2]]) #///user/hadoop/test_output
 }
 
 ### wifi connection log combine map function 
@@ -108,6 +108,14 @@ wifi_combine_data_mr <- function(input, output){
     verbose = TRUE)
 }
 
+
+file <- file.path("/data/wifi_connection_log/input/2015-06-11/ls.s3.ip-10-2-0-179.us-west-2.compute.internal.2015-06-11T20.28.part83.txt")
+xx <-  mapreduce(input = file, 
+                 input.format = make.input.format("csv", sep = "\t"), 
+                 map = map, 
+                 reduce = reduce,
+                 combine = FALSE,
+                 verbose = TRUE)
 ### run and output
 #first_mr_data <- wifi_combine_data_mr(hdfs.data, hdfs.out) 
 first_mr_data <- mapreduce(input = hdfs.data, 
